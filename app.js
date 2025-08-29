@@ -13,15 +13,21 @@ document.getElementById('notifyBtn').addEventListener('click', async () => {
 });
 
 function showNotification() {
-  const title = 'Hello!';
-  const options = {
-  body: 'Notifications are working!',
-  icon: 'icon.png',
-  data: {
-    url: 'https://vsgroupsofcompany.neocities.org/vs'
+  if (navigator.serviceWorker.controller) {
+    navigator.serviceWorker.getRegistration().then(reg => {
+      if (reg) {
+        reg.showNotification('Hello!', {
+          body: 'Notifications are working!',
+          icon: 'icon.png',
+          data: { url: 'https://vsgroupsofcompany.neocities.org/vs' }
+        });
+      } else {
+        console.error('No SW registration found');
+      }
+    });
+  } else {
+    console.error('No active SW controller');
   }
-};
-  new Notification(title, options);
 }
 
 // Register service worker
