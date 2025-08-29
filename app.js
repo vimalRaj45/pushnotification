@@ -15,10 +15,12 @@ document.getElementById('notifyBtn').addEventListener('click', async () => {
 function showNotification() {
   const title = 'Hello!';
   const options = {
-    body: 'Notifications are working!',
-    icon: 'icon.png',
-     { url: 'https://vsgroupsofcompany.neocities.org/vs' }
-  };
+  body: 'Notifications are working!',
+  icon: 'icon.png',
+  data: {
+    url: 'https://vsgroupsofcompany.neocities.org/vs'
+  }
+};
   new Notification(title, options);
 }
 
