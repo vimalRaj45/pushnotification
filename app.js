@@ -26,39 +26,38 @@ notifyBtn.addEventListener('click', async () => {
 });
 
 function showNotification() {
-  if (!('serviceWorker' in navigator)) {
-    console.error('Service Worker not supported');
-    return;
+  if (navigator.serviceWorker.controller) {
+    navigator.serviceWorker.getRegistration().then(reg => {
+      if (reg) {
+        console.log('SW registration found:', reg.scope);
+        reg.showNotification('Hello!', {
+          body: 'Notifications are working!',
+          icon: 'icon.png',
+          data: { url: 'https://vsgroupsofcompany.neocities.org/vs' },
+          tag: 'demo-notification',
+          renotify: true
+        }).then(() => {
+          console.log('Notification requested via SW');
+        }).catch(err => {
+          console.error('SW notification failed:', err);
+          // Fallback
+          new Notification('Hello!', { body: 'Notifications are working!', icon: 'icon.png' });
+        });
+      } else {
+        console.warn('No SW registration found, using direct Notification');
+        new Notification('Hello!', { body: 'Notifications are working!', icon: 'icon.png' });
+      }
+    }).catch(err => console.error('Error getting SW registration:', err));
+  } else {
+    console.warn('No SW controller, using direct Notification');
+    new Notification('Hello!', { body: 'Notifications are working!', icon: 'icon.png' });
   }
-
-  navigator.serviceWorker.getRegistration().then(reg => {
-    if (!reg) {
-      console.error('No Service Worker registration found');
-      return;
-    }
-
-    console.log('Service Worker registration found:', reg.scope);
-
-    reg.showNotification('Hello!', {
-      body: 'Notifications are working!',
-      icon: 'icon.png',
-      data: { url: 'https://vsgroupsofcompany.neocities.org/vs' },
-      tag: 'demo-notification',
-      renotify: true
-    });
-
-    console.log('Notification requested via Service Worker');
-  }).catch(err => {
-    console.error('Error getting SW registration:', err);
-  });
 }
 
 // Register Service Worker
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js')
-    .then(reg => {
-      console.log('Service Worker registered:', reg.scope);
-    })
+    .then(reg => console.log('Service Worker registered:', reg.scope))
     .catch(err => console.error('SW registration failed:', err));
 } else {
   console.error('Service Worker not supported');
