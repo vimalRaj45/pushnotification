@@ -13,27 +13,25 @@ document.getElementById('notifyBtn').addEventListener('click', async () => {
 });
 
 function showNotification() {
-  if (navigator.serviceWorker.controller) {
-    navigator.serviceWorker.getRegistration().then(reg => {
-      if (reg) {
-        reg.showNotification('Hello!', {
-          body: 'Notifications are working!',
-          icon: 'icon.png',
-          data: { url: 'https://vsgroupsofcompany.neocities.org/vs' }
-        });
-      } else {
-        console.error('No SW registration found');
-      }
-    });
-  } else {
-    console.error('No active SW controller');
-  }
+  // Use the Service Worker to show notifications
+  navigator.serviceWorker.getRegistration().then(reg => {
+    if (reg) {
+      reg.showNotification('Hello!', {
+        body: 'Notifications are working!',
+        icon: 'icon.png',
+        data: { url: 'https://vsgroupsofcompany.neocities.org/vs' },
+        tag: 'demo-notification', // prevent duplicate notifications
+        renotify: true
+      });
+    } else {
+      console.error('No SW registration found');
+    }
+  });
 }
 
 // Register service worker
 if ('serviceWorker' in navigator) {
-  const swUrl = '/pushnotification/sw.js';
-  navigator.serviceWorker.register(swUrl)
+  navigator.serviceWorker.register('sw.js')
     .then(reg => console.log('SW registered:', reg.scope))
     .catch(err => console.error('SW registration failed:', err));
 }
