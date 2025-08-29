@@ -1,15 +1,18 @@
 console.log('SW.js loaded');
 
+// Install event
 self.addEventListener('install', () => {
   console.log('SW installed');
   self.skipWaiting();
 });
 
+// Activate event
 self.addEventListener('activate', event => {
   console.log('SW activated');
   event.waitUntil(self.clients.claim());
 });
 
+// Handle notification click
 self.addEventListener('notificationclick', event => {
   console.log('Notification clicked:', event.notification);
   event.notification.close();
