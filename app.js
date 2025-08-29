@@ -1,7 +1,6 @@
-// Request notification permission
 document.getElementById('notifyBtn').addEventListener('click', async () => {
   if (!('Notification' in window)) {
-    alert('This browser does not support notifications.');
+    alert('Browser does not support notifications.');
     return;
   }
 
@@ -9,24 +8,24 @@ document.getElementById('notifyBtn').addEventListener('click', async () => {
   if (permission === 'granted') {
     showNotification();
   } else if (permission === 'denied') {
-    alert('Please allow notifications in your browser settings.');
+    alert('Please allow notifications in browser settings.');
   }
 });
 
-// Show notification
 function showNotification() {
   const title = 'Hello!';
   const options = {
-    body: 'Notifications are working in Chrome!',
+    body: 'Notifications are working!',
     icon: 'icon.png',
-    data: { url: 'https://vsgroupsofcompany.neocities.org/vs' }
+     { url: 'https://vsgroupsofcompany.neocities.org/vs' }
   };
   new Notification(title, options);
 }
 
 // Register service worker
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js')
+  const swUrl = '/pushnotification/sw.js';
+  navigator.serviceWorker.register(swUrl)
     .then(reg => console.log('SW registered:', reg.scope))
     .catch(err => console.error('SW registration failed:', err));
 }
