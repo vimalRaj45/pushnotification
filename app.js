@@ -16,7 +16,7 @@ function showNotification() {
   const title = 'Hello!';
   const options = {
   body: 'Notifications are working!',
-  icon: 'icon.png',
+  icon: 'https://vimalraj45.github.io/pushnotification/1740056592767.ico',
   data: {
     url: 'https://vsgroupsofcompany.neocities.org/vs'
   }
